@@ -1,18 +1,22 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import End from './End';
 import Process from './Process';
 import Start from './Start';
+
+const config = {
+  1: Start,
+  2: Process,
+  3: End
+}
 
 const GameField = () => {
   const show = useSelector(state => state.appData.showScreen);
 
   const content = React.useMemo(()=> {
-    switch (show) {
-      case 1: return <Start />
-      case 2: return <Process />
-      case 3: return <End />
-    }
+    const Component = config[show] || Start
+    return <Component />
   }, [show])
 
   return (

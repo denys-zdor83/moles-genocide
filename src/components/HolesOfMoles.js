@@ -1,24 +1,19 @@
-import GetMoles from './GetMoles';
+import HoleList from './HoleList';
 import styled from 'styled-components';
 
 const HolesOfMoles = () => {
     return (
-    <StyledWrapper>
-        <div className="game-container">
-            <GetMoles />
-        </div>
+    <StyledWrapper className="game-container">
+      <HoleList />
     </StyledWrapper>
     )
 }
 
 const StyledWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   height: 100%;
-  .game-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    height: 100%;
-  }
 `
 
 export default HolesOfMoles;

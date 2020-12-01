@@ -4,9 +4,7 @@ import styled from 'styled-components';
 const End = () => {
   return (
     <EndScreen>
-      <div>
-          YOU FAILED
-      </div>
+      YOU FAILED
     </EndScreen>
   );
 }
