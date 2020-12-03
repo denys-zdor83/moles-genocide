@@ -38,7 +38,7 @@ const initialState = {
   timer: 4000,
   showScreen: 1,
   currentTime: 0,
-  pause: 1000,
+  pause: 500,
   showFirstMole: true,
   moles: molesArray
 }
@@ -56,14 +56,14 @@ function appData(state = initialState, action) {
     case DECREASE_PAUSE: {
       return {
         ...state,
-        pause: state.pause - 200
+        pause: state.pause - 20
       }
     }
 
     case SET_PAUSE: {
       return {
         ...state,
-        pause: 1000,
+        pause: 500,
       }
     }
 
@@ -91,7 +91,7 @@ function appData(state = initialState, action) {
     }
 
     case CHANGE_TIME: {
-      const setNewTime = state.timer - 200;
+      const setNewTime = state.timer - 20;
       return {
         ...state,
         time: setNewTime,
@@ -145,7 +145,7 @@ function appData(state = initialState, action) {
       return {
         ...state,
         moles: newMolesArr,
-        pause: 1000,
+        pause: 500,
         time: state.time,
         timer: setTime(),
         failed: failedNum,

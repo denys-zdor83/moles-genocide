@@ -42,7 +42,7 @@ const Process = () => {
     if (failed === 3) {
       dispatch({type: CHANGE_SCREEN, payload: 3})
     }
-    if (time === 200) {
+    if (time === 20) {
       dispatch({type: SET_PAUSE})
     }
     if (pause) {
@@ -76,7 +76,7 @@ const Process = () => {
   );
 
   React.useEffect(() => {
-    const intervalId = setInterval(gameLoop, 500);
+    const intervalId = setInterval(gameLoop, 20);
     return () => clearInterval(intervalId);
   }, [gameLoop]);
 
