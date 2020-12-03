@@ -7,10 +7,14 @@ import empty from '../img/2.png';
 import { HANDLE_CLICK } from './../constants/constNames'
 
 const Hole = ({molesData}) => {
+  const pause = useSelector(state => state.appData.pause);
   const dispatch = useDispatch();
+
   const checkMole = React.useCallback((id) => {
-      dispatch({type: HANDLE_CLICK, payload: id});
-  }, [dispatch])
+      if (!pause) {
+        dispatch({type: HANDLE_CLICK, payload: id});
+      } 
+  }, [dispatch, pause])
 
   return molesData.map(({id, status, isFilled }) => {
     return (

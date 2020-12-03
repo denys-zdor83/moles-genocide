@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const End = () => {
+const SucsessEnd = () => {
   return (
     <EndScreen>
-      YOU FAILED
+      YOU WON
     </EndScreen>
   );
 }
@@ -18,4 +18,4 @@ const EndScreen = styled.div`
   font-weight: 500;
 `
 
-export default End;
+export default SucsessEnd;

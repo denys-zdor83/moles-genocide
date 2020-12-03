@@ -6,6 +6,8 @@ import { SET_RANDOM_MOLE } from './../../constants/constNames'
 import { CHANGE_TIME } from './../../constants/constNames'
 import { SET_PAUSE } from './../../constants/constNames'
 import { SET_TIME } from './../../constants/constNames'
+import { SET_FAILED } from './../../constants/constNames'
+import { SET_DIFFICULTY } from './../../constants/constNames'
 
 const molesArray = new Array(6)
                   .fill('')
@@ -32,43 +34,48 @@ const initialState = {
   difficulty: 1,
   score: 0,
   failed: 0,
-  time: 0,
+  time: 4000,
+  timer: 4000,
   showScreen: 1,
   currentTime: 0,
-  pause: 0,
+  pause: 1000,
   showFirstMole: true,
   moles: molesArray
 }
 
 function appData(state = initialState, action) {
   switch (action.type) {
+
     case CHANGE_SCREEN: {
       return {
         ...state,
         showScreen: action.payload,
       }
     }
+
     case DECREASE_PAUSE: {
       return {
         ...state,
-        pause: state.pause - 20
+        pause: state.pause - 200
       }
     }
+
     case SET_PAUSE: {
       return {
         ...state,
-        pause: 500,
-        time: 0
+        pause: 1000,
       }
     }
+
     case SET_RANDOM_MOLE: {
       return {
         ...state,
         moles: showRandomeMole()
       }
     }
+
     case SET_TIME: {
-      let setTime = () => {
+      const setTime = () => {
         switch(state.difficulty) {
           case 1: return 4000;
           case 2: return 3000;
@@ -79,96 +86,72 @@ function appData(state = initialState, action) {
       return {
         ...state,
         time: setTime(),
+        timer: setTime(),
       }
     }
 
-    case CHANGE_TIME: 
-    const setNewTime = state.time - 20;
-    return {
-      ...state,
-      time: setNewTime
+    case CHANGE_TIME: {
+      const setNewTime = state.timer - 200;
+      return {
+        ...state,
+        time: setNewTime,
+        timer: setNewTime
+      }
     }
 
-    // case 'SET_END_SCREEN': 
-    // return {
-    //   ...state,
-    //   showScreen: 3,
-    //   time: 0
-    // }
-
-    case HANDLE_CLICK: 
-    console.log(action.payload)
-    return {
-      ...state
+    case SET_FAILED: {
+      const setFailed = state.failed + 1;
+      return {
+        ...state,
+        failed: setFailed
+      }
     }
 
-    // case 'SET_AND_CANCEL_FIRST_MOLE': 
-    // const random = Math.floor( Math.random() * 6 );
-    // const newArrMoles = state.moles.map(mole => ({...mole, isFilled: false})).map((mole, id) => {
-    //   if (id === random) {
-    //     return {
-    //       ...mole,
-    //       isFilled: true
-    //     }
-    //   }
-    //   return mole;
-    // })
+    case SET_DIFFICULTY: {
+      return {
+        ...state,
+        difficulty: action.payload
+      }
+    }
 
-    // return {
-    //   ...state,
-    //   moles: newArrMoles,
-    //   showFirstMole: false
-    // }
-    
+    case HANDLE_CLICK: {
+      const newMolesArr = state.moles.map((mole, id) => {
+        if (id === action.payload) {
+          return mole.isFilled ? 
+                {...mole, status: '#24d800'} : 
+                {...mole, status: '#f00202'}
+        }
+        return mole
+      });
+      const isFailed = !!state.moles.find((mole, id) => {
+        if (id === action.payload) {
+          return mole.isFilled
+        }
+      });
+      let failedNum = isFailed ? state.failed : state.failed + 1;
+      let scoreNum = isFailed ? state.score + 1 : state.score;
 
-    // case "SUCSESS_CLICK": 
-    // let arrSucsess = state.moles.map((mole, id) => {
-    //   if (id === action.payload) {
-    //     return {
-    //       ...mole,
-    //       status: '#1ef302'
-    //     }
-    //   }
-    //   return mole
-    // });
-    // let setScore = state.score + 1;
-    // let setDifficulty;
-    
-    // if (setScore < 10) {
-    //   setDifficulty = 1
-    // } else if (setScore >= 10 && setScore < 20) {
-    //   setDifficulty = 2
-    // } else if (setScore >= 20 && setScore < 30) {
-    //   setDifficulty = 3
-    // } else if (setScore >= 30 && setScore < 40) {
-    //   setDifficulty = 4
-    // }
-    // return {
-    //   ...state,
-    //   score: setScore,
-    //   difficulty: setDifficulty,
-    //   pause: 500,
-    //   time: 0,
-    //   moles: arrSucsess
-    // }
-
-    // case "FAIL_CLICK": 
-    // let arrFail = state.moles.map((mole, id) => {
-    //   if (id === action.payload) {
-    //     return {
-    //       ...mole,
-    //       status: '#ff0000'
-    //     }
-    //   }
-    //   return mole
-    // });
-    // return {
-    //   ...state,
-    //   failed: state.failed + 1,
-    //   pause: 500,
-    //   time: 0,
-    //   moles: arrFail
-    // }
+      const setTime = () => {
+        if (scoreNum >= 0 && scoreNum < 10) {
+          return 4000
+        } else if (scoreNum >= 10 && scoreNum < 20) {
+          return 3000
+        } else if (scoreNum >= 20 && scoreNum < 30) {
+          return 2000
+        } else if (scoreNum >= 30 && scoreNum <= 100) {
+          return 1000
+        } 
+      }
+      return {
+        ...state,
+        moles: newMolesArr,
+        pause: 1000,
+        time: state.time,
+        timer: setTime(),
+        failed: failedNum,
+        score: scoreNum,
+      }
+    }
 
   }
   return state;

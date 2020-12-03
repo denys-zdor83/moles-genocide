@@ -2,11 +2,11 @@ import HoleList from './HoleList';
 import styled from 'styled-components';
 
 const HolesOfMoles = () => {
-    return (
-    <StyledWrapper className="game-container">
+  return (
+    <StyledWrapper>
       <HoleList />
     </StyledWrapper>
-    )
+  )
 }
 
 const StyledWrapper = styled.div`
